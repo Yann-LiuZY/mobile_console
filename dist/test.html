@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui" name="viewport">
+	<title>test html</title>
+	<link rel="stylesheet" type="text/css" href="css/dfs.css">
+	<script type="text/javascript" src="dfds.js"></script>
+</head>
+<body>
+	<div class="container">
+		<h1>hello wolrd</h1>
+		<p>file of test</p>
+		<img src="img/dfsfd.png" id="test_img">
+		<img src="clear.png" id="test_img2">
+	</div>
+	<script type="text/javascript" src="jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="main.js"></script>
+	<script type="text/javascript">
+		// 命令行重写效果展示
+		$(function(){
+			console.log("hello wolrd");
+			console.warning("hello world");
+			console.error("hello world");
+		});
+		// js错误捕获演示
+		$(function(){
+			sfsfsdf
+		});
+		// ajax错误捕获演示
+		$(function(){
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", "dsafas");
+			
+			xhr.onreadystatechange = function(){
+				// if(xhr.readyState == 4){
+				// 	console.dir("ajax end");
+				// }
+			}
+			// xhr.onerror = function(data){
+			// 	console._log("ajax fail");
+			// }
+			xhr.send({data: "hello", id: 2131});
+		});
+		// 成功的ajax请求演示（演示需服务器提供接口）
+		$(function(){
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", "/hello");
+			
+			xhr.onreadystatechange = function(data){
+				// if(xhr.readyState == 4){
+				// 	console._log(xhr);
+				// }
+			}
+			xhr.send({data: "hello", id: 2131});
+		});
+	</script>
+</body>
+</html>
