@@ -5,6 +5,10 @@ window.onerror = function(message, url, line){
 	console.error("Javascript error: " + message + ": " + (fileName ? fileName[1] : "") + ":line" + line);
 }
 
+/**
+ * 当XMLHttpRequest触发send事件时，其onreadystatechange事件和onerror事件已经绑定完毕，
+ * 故而在此时对其进行相应重写以对其进行错误监控
+ */
 var _send = XMLHttpRequest.prototype.send;
 XMLHttpRequest.prototype.send = function(){
 	_send.apply(this, arguments);
@@ -25,9 +29,9 @@ XMLHttpRequest.prototype.send = function(){
 	}
 }
 
-// 文件加载错误检测，检测img、css、js
+// 文件加载错误检测，检测img、css、js等文件的加载错误
 $(function(){
-	// 重新加载图片，使用onerror检验图片成功加载
+	// 重新加载图片，使用onerror检验图片是否成功加载
 	$("img").each(function(index, item){
 		item.onerror = function(event){
 			console.error("File loading error:" + event.target.src);
@@ -35,7 +39,7 @@ $(function(){
 		item.src = item.src;
 	});
 
-	// 重新加载css文件，使用onerror检验css成功加载
+	// 重新加载css文件，使用onerror检验css是否成功加载
 	$("link").each(function(index, item){
 		if(item.rel != "stylesheet")
 			return;

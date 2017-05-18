@@ -3,6 +3,13 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui" name="viewport">
+	<!-- UC默认竖屏 ，UC强制全屏 -->
+	<meta name="full-screen" content="yes">
+	<meta name="browsermode" content="application">
+	<!-- QQ强制竖屏 QQ强制全屏 -->
+	<meta name="x5-orientation" content="portrait">
+	<meta name="x5-fullscreen" content="true">
+	<meta name="x5-page-mode" content="app">
 	<title>test html</title>
 	<link rel="stylesheet" type="text/css" href="css/dfs.css">
 	<script type="text/javascript" src="dfds.js"></script>
@@ -45,7 +52,7 @@
 		// 成功的ajax请求演示（演示需服务器提供接口）
 		$(function(){
 			var xhr = new XMLHttpRequest();
-			xhr.open("GET", "/hello");
+			xhr.open("GET", "hello");
 			
 			xhr.onreadystatechange = function(data){
 				// if(xhr.readyState == 4){

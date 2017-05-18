@@ -5,7 +5,7 @@ module.exports = {
 		main: "./js/main.js"
 	},
 	output: {
-		filename: "[name].js",
+		filename: "fast-console.js",
 		path: __dirname + "/dist/"
 	},
 	module: {
@@ -16,10 +16,10 @@ module.exports = {
 	},
 	plugins: [		
 		// js压缩
-		// new webpack.optimize.UglifyJsPlugin({
-		// 	compress: {
-		// 		warnings: false
-		// 	}
-		// }),
+		new webpack.optimize.UglifyJsPlugin({
+			compress: {
+				warnings: false
+			}
+		}),
 	]
 };

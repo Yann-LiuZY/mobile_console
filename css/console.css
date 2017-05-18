@@ -489,13 +489,3 @@ button,input[type="button"], input[type="submit"], input[type="reset"]{
 }
 
 /* index-btn end */
-
-/* console-element start */
-.console-element{
-	display: none;
-	overflow-x: hidden;
-
-	width: 100%;
-}
-/* console-element end */
-

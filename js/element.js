@@ -1,5 +1,5 @@
 /*
- * 引入的树状目录插件
+ * 引入的树状目录插件zTree
  * JQuery zTree core v3.5.28
  */
 (function(q){var H,I,J,K,L,M,u,r={},v={},w={},N={treeId:"",treeObj:null,view:{addDiyDom:null,autoCancelSelected:!0,dblClickExpand:!0,expandSpeed:"fast",fontCss:{},nameIsHTML:!1,selectedMulti:!0,showIcon:!0,showLine:!0,showTitle:!0,txtSelectedEnable:!1},data:{key:{children:"children",name:"name",title:"",url:"url",icon:"icon"},simpleData:{enable:!1,idKey:"id",pIdKey:"pId",rootPId:null},keep:{parent:!1,leaf:!1}},async:{enable:!1,contentType:"application/x-www-form-urlencoded",type:"post",dataType:"text",
@@ -67,43 +67,67 @@ k(a,d).get(0)&&j.uCanDo(d)&&(i.setNodeName(d,a),i.setNodeTarget(d,a),i.setNodeUr
 
 require("../css/element.css");
 
-var datas = [];
-// 深度优先遍历dom树
-function walkDom(node, index, callback) {
+var datas = [];		// 用于存储dom树结点信息
+/**
+ * 使用递归遍历算法对dom树进行遍历
+ * node为dom对象，是当前遍历中的dom结点
+ * callback为函数，用于对当前dom结点进行访问
+ * 无返回值
+ */
+function walkDom(node, callback) {
     if (node === null || node.id == "console-container" || node.id == "index-btn") {
         return;
     }
-    callback(node, index);
+    callback(node);
     node = node.firstElementChild;
-    index = parseInt(index + "" + 1);
     while (node) {
-        walkDom(node, index, callback);
+        walkDom(node, callback);
         node = node.nextElementSibling;
-        index++;
     }
 }
-// 在遍历dom树的过程中，生成树结构插件所需要的数据格式
-var treeDataSet = walkDom.bind(window, document, 1, function(node, index){
+/**
+ * 遍历所有的dom结点，为结点设置nodeIndex，作为插件所需要的id值
+ * 无返回值
+ */
+var index = 1;		// 进行所有结点设置nodeIndex值时所用值
+function domIndexSet(){
+	index = 1;
+	walkDom(document, function(node){
+		node.nodeIndex = index;
+		index++;
+	});
+}
+/**
+ * 遍历所有的dom结点，获取插件所需要的结点数据
+ * 无返回值
+ */
+var treeDataGet = walkDom.bind(window, document, function(node){
 	var temp = {};
 	temp.name = node.nodeName.toLowerCase() + (node.id?("#"+node.id):"") + (node.className?("."+node.className):"");
-	temp.id = index;
-	temp.pId = parseInt(index.toString().slice(0, -1));
-	temp.pId = temp.pId ? temp.pId : 0;
+	// 获取结点id
+	temp.id = node.nodeIndex;
+	// 获取父节点id
+	temp.pId = node.parentNode ? node.parentNode.nodeIndex : 0;
 	temp.open = true;
 	datas.push(temp);
-	// 若该节点为叶子节点，包含文本信息，且非script标签和link标签，则将其内容添加为该节点的子节点
+	// 若该节点为叶子节点，且包含文本信息，且非script标签和link标签，则将其内容添加为该节点的子节点
 	if(node.childElementCount === 0 && node.innerText && node.nodeName != "SCRIPT" && node.nodeName != "STYLE"){
 		var contentTemp = {};
 		contentTemp.name = "content: " + node.innerText;
-		contentTemp.id = parseInt(index + "" + 1);
-		contentTemp.pId = index;
+		contentTemp.id = ++index;
+		contentTemp.pId = node.nodeIndex;
 		datas.push(contentTemp);
 	}
 });
-// 树状图更节点信息，更新树状图
+/**
+ * 根据datas存储的值创建树状图或更新树状图
+ * 无返回值
+ */
 function treeFresh(){
+	// 清空datas
 	datas = [];
-	treeDataSet();
+	domIndexSet();
+	treeDataGet();
 	$.fn.zTree.init($("#ztree"), setting, datas);
 }
 // 树状结构图设定
@@ -121,6 +145,7 @@ var setting = {
 		onClick: onClick
 	}
 };
+// 树状图插件所需配置函数，使结点在被点击时可收放目录
 function onClick(e,treeId, treeNode) {
 	var zTree = $.fn.zTree.getZTreeObj("ztree");
 	zTree.expandNode(treeNode);
